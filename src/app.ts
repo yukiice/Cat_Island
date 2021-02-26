@@ -1,11 +1,11 @@
-const Koa  = require('koa');
+import koa, { Context } from "koa";
 
-const app = new Koa()
+const app = new koa();
 
-function test(){
-    console.log('hello')
-}
+app.use(async (ctx: Context, next) => {
+  ctx.body = "koa";
+  console.log("aaa");
+  await next();
+});
 
-app.use(test)
-
-app.listen(3000)
+app.listen(3000);
