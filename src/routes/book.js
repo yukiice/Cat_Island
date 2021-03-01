@@ -1,13 +1,11 @@
 const Router = require("koa-router");
+const {PositiveIntegerValidator} = require('../validators/validators')
 const router = new Router();
-router.post("/v1/:id/classic/latest", async (ctx, next) => {
-  if (true) {
-    const error = new global.errs.ParamsException
-    // error.requestUrl = `${ctx.method} ${cxt.path}`;
-    throw error;
-  }
-  ctx.body = {
-    key: "clasic",
-  };
+router.post("/v1/:id/classic/latest", (ctx, next) => {
+
+  //验证处理
+  const v = new PositiveIntegerValidator().validate(ctx)
+  v.get()
+  ctx.body = "success"
 });
 module.exports = router;

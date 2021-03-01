@@ -8,6 +8,7 @@ const app = new Koa()
 // 应用中间件
 app.use(parser())
 app.use(catchError)
+process.cwd()
 InitManager.initCore(app)
 
 app.listen(3000,()=>{

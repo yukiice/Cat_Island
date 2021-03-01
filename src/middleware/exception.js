@@ -3,8 +3,14 @@ const catchError = async (ctx, next) => {
   try {
     await next();
   } catch (error) {
+    //判断是开发环境还是生产环境
+    const isHttpException = error instanceof HttpException
+    const isDev  = global.config.environment === 'dev'
+    if(isDev && !isHttpException){
+      throw error;
+    }
     // 判断错误类型 如果符合  那么属于已知错误
-    if (error instanceof HttpException) {
+    if (isHttpException) {
       ctx.body = {
         msg: error.msg,
         error_code: error.errorCode,

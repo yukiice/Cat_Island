@@ -6,8 +6,8 @@ class HttpException extends Error {
     this.msg = msg;
   }
 }
-class ParamsException extends HttpException {
-  constructor(msg, errorCode) {
+class ParameterException extends HttpException {
+  constructor(code,msg, errorCode) {
     super();
     this.code = 400;
     this.msg = msg || "参数错误";
@@ -17,5 +17,5 @@ class ParamsException extends HttpException {
 
 module.exports = {
   HttpException,
-  ParamsException,
+  ParameterException,
 };
