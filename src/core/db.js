@@ -23,7 +23,8 @@ const sequelize = new Sequelize(dbName,user,password,{
 })
 
 sequelize.sync({
-    force:true
+    //定期删除
+    force:false
 })
 module.exports = {
     sequelize
