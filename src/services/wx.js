@@ -20,8 +20,9 @@ class WXManager {
         }
     //    验证是否合法
         const errcode = result.data.errcode
-        if(errcode !== 0){
-            throw new global.errs.AuthFailed('openid获取失败'+errcode)
+        const errmsg = result.data.errmsg
+        if(errcode){
+            throw new global.errs.AuthFailed('openid获取失败'+errcode+"原因："+errmsg)
         }
     //    验证openid
         let user = await User.getUserbyOpenid(result.data.openid)

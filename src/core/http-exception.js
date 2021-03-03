@@ -37,7 +37,7 @@ class NotFound extends HttpException {
 }
 
 class AuthFailed extends HttpException {
-  constructor(errorCode,msg ){
+  constructor(msg,errorCode ){
     super()
     this.msg = msg || '授权失败'
     this.errorCode = errorCode || 10004
