@@ -4,6 +4,8 @@ const {LoginType} = require('../lib/enums')
 const {User} = require('../models/user')
 const {generateToken} = require('../core/util')
 const {Auth} =  require('../middleware/auth')
+//导入wx openid
+const {WXManager} = require('../services/wx')
 const router = new Router({
     prefix:'/v1/token'
 })
@@ -17,7 +19,7 @@ router.post('/',async(ctx)=>{
             token = await emailLogin(v.get('body.account'), v.get('body.secret'));
             break;
         case LoginType.USER_MINI_PROGRAM:
-
+            token = await WXManager.codeToToken(v.get('body.account'))
             break
         default :
             throw new global.errs.ParameterException("没有相应的处理函数，请联系管理员")
