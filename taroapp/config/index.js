@@ -1,6 +1,6 @@
 const config = {
-  projectName: 'taroapp',
-  date: '2021-2-19',
+  projectName: 'taroApp',
+  date: '2021-4-22',
   designWidth: 750,
   deviceRatio: {
     640: 2.34 / 2,
@@ -45,7 +45,6 @@ const config = {
   h5: {
     publicPath: '/',
     staticDirectory: 'static',
-    esnextModules: ['taro-ui'],
     postcss: {
       autoprefixer: {
         enable: true,
