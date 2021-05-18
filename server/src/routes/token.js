@@ -15,12 +15,15 @@ router.post('/',async(ctx)=>{
 //    判断登录方式
     let token;
     switch(v.get('body.type')){
+        // email登录
         case LoginType.USER_EMAIL:
             token = await emailLogin(v.get('body.account'), v.get('body.secret'));
             break;
+            // 小程序登录
         case LoginType.USER_MINI_PROGRAM:
             token = await WXManager.codeToToken(v.get('body.account'))
             break
+            // 没有设置特殊登录
         default :
             throw new global.errs.ParameterException("没有相应的处理函数，请联系管理员")
     }

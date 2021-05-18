@@ -27,7 +27,7 @@ class Success extends HttpException {
 }
 
 // 404 未找到
-class NotFound extends HttpException {
+class NotFound extends HttpException { 
   constructor(msg,errorCode){
     super()
     this.msg = msg || '资源未找到'
