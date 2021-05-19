@@ -1,17 +1,26 @@
-const  catchError  = async (ctx,next) =>{
-    try {
-        await next()
-    } catch (error) {
-        if (error.errorCode) {
-            ctx.body  = {
-                msg:error.message,
-                error_code:error.errorCode,
-                request_url:error.requestUrl
-            }
-            ctx.status  = error.status
-        }
-        
-    }
-}
+const { HttpException } = require("../core/http-exception");
 
-module.exports  = catchError
+const catchError = async(ctx, next) => {
+    try {
+        await next();
+    } catch (error) {
+        if (error instanceof HttpException) {
+            ctx.body = {
+                msg: error.msg,
+                error_code: error.errorCode,
+                request: `${ctx.method} - ${ctx.path}`,
+            };
+            ctx.status = error.code
+        } else {
+            // 客户端的异常
+            ctx.body = {
+                msg: 'we made a mistake ❤️',
+                error_code: 999,
+                request: `${ctx.method} - ${ctx.path}`
+            }
+            ctx.status = 500
+        }
+    }
+};
+
+module.exports = catchError;

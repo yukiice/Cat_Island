@@ -9,6 +9,7 @@ const app = new Koa()
 app.use(parser())
 app.use(catchError)
 process.cwd()
+// 挂载静态方法
 InitManager.initCore(app)
 
 app.listen(3000,()=>{

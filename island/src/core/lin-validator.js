@@ -70,7 +70,7 @@ class LinValidator {
         })
 
         const errorMsgs = []
-        // const map = new Map(memberKeys)
+            // const map = new Map(memberKeys)
         for (let key of memberKeys) {
             const result = await this._check(key, alias)
             if (!result.success) {
@@ -85,7 +85,7 @@ class LinValidator {
     }
 
     async _check(key, alias = {}) {
-        const isCustomFunc = typeof (this[key]) == 'function' ? true : false
+        const isCustomFunc = typeof(this[key]) == 'function' ? true : false
         let result;
         if (isCustomFunc) {
             try {
@@ -99,7 +99,7 @@ class LinValidator {
             // 属性验证, 数组，内有一组Rule
             const rules = this[key]
             const ruleField = new RuleField(rules)
-            // 别名替换
+                // 别名替换
             key = alias[key] ? alias[key] : key
             const param = this._findParam(key)
 
@@ -222,7 +222,7 @@ class RuleField {
             if (!result.pass) {
                 filedResult.msg = result.msg
                 filedResult.legalValue = null
-                // 一旦一条校验规则不通过，则立即终止这个字段的验证
+                    // 一旦一条校验规则不通过，则立即终止这个字段的验证
                 return filedResult
             }
         }
