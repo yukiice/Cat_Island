@@ -4,7 +4,12 @@ const { ValidationInteger } = require('../validators/validator')
 
 router.post('/book/:id/', async(ctx, next) => {
     const V = await new ValidationInteger().validate(ctx)
-    ctx.body = 'success'
+    const id = V.get('path.id')
+
+    ctx.body = {
+        msg: 'success',
+        id
+    }
 })
 
 module.exports = router

@@ -3,9 +3,16 @@ const Router = require("koa-router");
 const requireDirectory = require("require-directory");
 class InitManager {
     static initCore(app) {
-        InitManager.app = app;
-        InitManager.initLoadRoutes();
-        InitManager.loadHttpException();
+            InitManager.app = app;
+            InitManager.initLoadRoutes();
+            InitManager.loadHttpException();
+            InitManager.loadConfig()
+        }
+        // 判断开发环境还是生产环境
+    static loadConfig(path = "") {
+        const configPath = path || process.cwd() + `/src/config/config.js`;
+        const config = require(configPath);
+        global.config = config;
     }
 
     //   自动化加载路由

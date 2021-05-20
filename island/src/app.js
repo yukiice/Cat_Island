@@ -3,6 +3,9 @@ const bodyParser = require('koa-bodyparser')
 
 const InitManager = require('./core/init')
 const catchError = require(`./middleware/exception`);
+
+require('./model/user')
+
 const app = new Koa()
     // 应用中间件
 app.use(bodyParser())
