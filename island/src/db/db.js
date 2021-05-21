@@ -20,12 +20,22 @@ const sequelize = new Sequelize(
         // 时区问题
         timezone: '+08:00',
         define: {
-
+            // 时间戳是否显示
+            timestamps: false,
+            // 开启软删除
+            paranoid: true,
+            // 开启自定义命名
+            underscored: true,
+            createAt: 'create_at',
+            updateAt: 'update_at',
+            deleteAt: 'delete_at'
         }
     },
 
 )
-sequelize.sync()
+sequelize.sync({
+    force: true
+})
 
 module.exports = {
     sequelize
