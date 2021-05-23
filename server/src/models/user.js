@@ -1,6 +1,6 @@
-const {sequelize} = require('../core/db')
-const {Sequelize,Model} = require('sequelize')
-const bcrypt  = require('bcryptjs')
+const { sequelize } = require('../core/db')
+const { Sequelize, Model } = require('sequelize')
+const bcrypt = require('bcryptjs')
 class User extends Model {
     static async verifyEmailPassword(email, plainPassword) {
         const user = await User.findOne({
@@ -11,9 +11,9 @@ class User extends Model {
         if (!user) {
             throw new global.errs.NotFound('账户不存在')
         }
-    //    做密码比对
-        const correct = bcrypt.compareSync(plainPassword,user.password)
-        if (!correct){
+        //    做密码比对
+        const correct = bcrypt.compareSync(plainPassword, user.password)
+        if (!correct) {
             throw new global.errs.AuthFailed('密码不正确')
         }
 
@@ -22,16 +22,16 @@ class User extends Model {
 
     }
 
-//    获取userId
-    static async getUserbyOpenid(openid){
+    //    获取userId
+    static async getUserbyOpenid(openid) {
         const user = await User.findOne({
-            where:{
+            where: {
                 openid
             }
         })
         return user
     }
-    static async registerByOpenid(openid){
+    static async registerByOpenid(openid) {
         return await User.create({
             openid
         })
@@ -39,33 +39,33 @@ class User extends Model {
 }
 
 User.init({
-    id:{
-      type:Sequelize.INTEGER,
-      //  主键
-      primaryKey:true,
+    id: {
+        type: Sequelize.INTEGER,
+        //  主键
+        primaryKey: true,
         //自动增长
-        autoIncrement:true
+        autoIncrement: true
     },
-    nickname:Sequelize.STRING,
+    nickname: Sequelize.STRING,
     email: {
-        type:Sequelize.STRING,
-        unique:true
+        type: Sequelize.STRING,
+        unique: true
     },
-    password:{
-        type:Sequelize.STRING,
+    password: {
+        type: Sequelize.STRING,
         set(value) {
             const salt = bcrypt.genSaltSync(10)
-            const psw = bcrypt.hashSync(value,salt)
-            this.setDataValue('password',psw)
+            const psw = bcrypt.hashSync(value, salt)
+            this.setDataValue('password', psw)
         }
     },
-    openid:{
-        type:Sequelize.STRING(64),
-        unique:true
+    openid: {
+        type: Sequelize.STRING(64),
+        unique: true
     }
-},{
+}, {
     sequelize,
-    tableName:'user'
+    tableName: 'user'
 })
 
 module.exports = {

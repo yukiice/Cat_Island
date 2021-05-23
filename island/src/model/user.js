@@ -7,8 +7,26 @@ const {
     Model
 } = require('sequelize')
 
-class User extends Model {
+const bcrypt = require('bcryptjs')
 
+class User extends Model {
+    static async verifyEmailPassword(email, plainPassword) {
+        const user = await User.findOne({
+            where: {
+                email
+            }
+        })
+        if (!user) {
+            throw new global.errs.NotFound('用户不存在')
+        }
+        // 存在该用户
+        const correct = bcrypt.compareSync(plainPassword, user.password)
+
+        if (!correct) {
+            throw new global.errs.AuthFailed('密码不正确')
+        }
+        return user
+    }
 }
 
 User.init({
@@ -19,8 +37,20 @@ User.init({
         autoIncrement: true
     },
     nickname: Sequelize.STRING,
-    email: Sequelize.STRING,
-    password: Sequelize.STRING,
+    email: {
+        type: Sequelize.STRING,
+        unique: true
+    },
+    password: {
+        type: Sequelize.STRING,
+        set(val) {
+            const salt = bcrypt.genSaltSync(8)
+                // model 内部的属性操作
+            const psw = bcrypt.hashSync(val, salt)
+                // 赋值
+            this.setDataValue('password', psw)
+        }
+    },
     openid: {
         type: Sequelize.STRING(64),
         // 设置为唯一
@@ -30,3 +60,8 @@ User.init({
     sequelize,
     tableName: 'user'
 })
+
+
+module.exports = {
+    User
+}

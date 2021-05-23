@@ -21,7 +21,7 @@ const sequelize = new Sequelize(
         timezone: '+08:00',
         define: {
             // 时间戳是否显示
-            timestamps: false,
+            timestamps: true,
             // 开启软删除
             paranoid: true,
             // 开启自定义命名
@@ -34,7 +34,8 @@ const sequelize = new Sequelize(
 
 )
 sequelize.sync({
-    force: true
+    force: false
+        // alter: true
 })
 
 module.exports = {

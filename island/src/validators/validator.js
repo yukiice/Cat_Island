@@ -1,7 +1,13 @@
 const {
     LinValidator,
-    Rule
+    Rule,
+
 } = require('../core/lin-validator')
+const {
+    User
+} = require('../model/user')
+
+const { LoginType } = require('../lib/enum')
 
 class ValidationInteger extends LinValidator {
     constructor() {
@@ -36,16 +42,61 @@ class RegisterValidator extends LinValidator {
             })
         ]
     }
-    validatePassword(vals) {
+    async validatePassword(vals) {
         const psw1 = vals.body.password1
         const psw2 = vals.body.password2
         if (psw1 !== psw2) {
             throw new Error('两次的密码必须相同')
         }
     }
+
+    //邮箱验证规则
+    async validateEmail(vals) {
+        const email = vals.body.email
+        const user = await User.findOne({
+            where: {
+                email: email
+            }
+        })
+        if (user) {
+            throw new Error('邮箱重复,用户已存在')
+        }
+
+    }
+}
+
+
+// token验证
+class TokenValidator extends LinValidator {
+    constructor() {
+        super()
+        this.account = [
+            new Rule('isLength', '不符合账号规则', {
+                min: 4,
+                max: 32
+            })
+        ]
+        this.secret = [
+            new Rule('isOptional'),
+            new Rule('isLength', '至少6个字符', {
+                min: 6,
+                max: 128
+            })
+        ]
+    }
+
+    validateLoginType(vals) {
+        if (!vals.body.type) {
+            throw new Error('type必须是参数')
+        }
+        if (!LoginType.isThisTyPE(vals.body.type)) {
+            throw new Error('type参数不合法')
+        }
+    }
 }
 
 module.exports = {
     ValidationInteger,
-    RegisterValidator
+    RegisterValidator,
+    TokenValidator
 }
