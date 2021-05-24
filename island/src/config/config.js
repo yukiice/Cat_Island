@@ -1,5 +1,9 @@
 module.exports = {
     environment: 'dev',
+    security: {
+        secretKey: "$6jiORlWa!k?YK",
+        expiresIn: 60 * 60 * 24
+    },
     database: {
         dbName: 'island',
         host: 'localhost',

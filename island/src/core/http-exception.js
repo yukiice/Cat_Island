@@ -46,7 +46,7 @@ class AuthFailed extends HttpException {
     }
 }
 
-class Forbidden extends HttpException {
+class Forbbiden extends HttpException {
     constructor(msg, errorCode) {
         super()
         this.msg = msg || '您没有访问的权限'
@@ -61,5 +61,5 @@ module.exports = {
     Success,
     NotFound,
     AuthFailed,
-    Forbidden
+    Forbbiden
 }
