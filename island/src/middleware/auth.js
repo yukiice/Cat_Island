@@ -1,12 +1,15 @@
 const basicAuth = require('basic-auth')
 const jwt = require('jsonwebtoken')
 class Auth {
-    constructor() {
-
+    constructor(level) {
+        this.level = level || 1
+        Auth.USER = 8
+        Auth.ADMIN = 16
+        Auth.SUPER_ADMIN = 32
     }
 
     get m() {
-        return async(ctx, next) => {
+        return async (ctx, next) => {
             // token 检测
             // token 开发者 传递令牌
             // token body header
@@ -33,6 +36,10 @@ class Auth {
 
             // 这之后的话  token合法
             // 拿到uid scope 存在上下文中
+            if (decode.scope < this.level) {
+                errMsg = '用户权限不足'
+                throw new global.errs.Forbbiden(errMsg)
+            }
 
             ctx.auth = {
                 uid: decode.uid,

@@ -8,21 +8,25 @@ const {
     User
 } = require('../model/user')
 
-const { LoginType } = require('../lib/enum')
+const {LoginType} = require('../lib/enum')
 
 // 导入 token处理函数
-const { generateToken } = require('../core/util')
+const {generateToken} = require('../core/util')
+
+const {WxManager} = require('../service/wx')
+
+const {Auth} = require('../middleware/auth')
 
 const router = new Router({
     prefix: `/v1/token`
 })
 
-router.post(`/`, async(ctx, next) => {
+router.post(`/`, async (ctx, next) => {
     const v = await new TokenValidator().validate(ctx)
     let token
     switch (v.get('body.type')) {
         case LoginType.USER_MINI_PROGRAM:
-
+            token = await WxManager.codeToToken(v.get('body.account'))
             break;
         case LoginType.USER_EMAIL:
             token = await emailLogin(v.get('body.account'), v.get('body.secret'))
@@ -48,7 +52,8 @@ router.post(`/`, async(ctx, next) => {
 async function emailLogin(account, secret) {
     // 比对后返回
     const verify = await User.verifyEmailPassword(account, secret)
-    return token = generateToken(verify.id, 2)
+    let token;
+    return token = generateToken(verify.id, Auth.USER)
 }
 
 module.exports = router
