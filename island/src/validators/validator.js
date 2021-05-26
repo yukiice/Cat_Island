@@ -7,7 +7,9 @@ const {
     User
 } = require('../model/user')
 
-const { LoginType } = require('../lib/enum')
+const {
+    LoginType
+} = require('../lib/enum')
 
 class ValidationInteger extends LinValidator {
     constructor() {
@@ -95,8 +97,22 @@ class TokenValidator extends LinValidator {
     }
 }
 
+
+// 非空验证
+
+class NoEmptyStringValidator extends LinValidator {
+    constructor() {
+        super()
+        this.token = [
+            new Rule('isLength', '不允许为空', { min: 1 })
+        ]
+    }
+
+}
+
 module.exports = {
     ValidationInteger,
     RegisterValidator,
-    TokenValidator
+    TokenValidator,
+    NoEmptyStringValidator
 }

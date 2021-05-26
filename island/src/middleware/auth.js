@@ -9,7 +9,7 @@ class Auth {
     }
 
     get m() {
-        return async (ctx, next) => {
+        return async(ctx, next) => {
             // token 检测
             // token 开发者 传递令牌
             // token body header
@@ -46,6 +46,15 @@ class Auth {
                 scope: decode.scope
             }
             await next()
+        }
+    }
+
+    static verifyToken(token) {
+        try {
+            jwt.verify(token, global.config.security.secretKey)
+            return true
+        } catch (error) {
+            return false
         }
     }
 }

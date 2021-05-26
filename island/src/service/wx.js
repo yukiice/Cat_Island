@@ -1,8 +1,8 @@
 const util = require('util')
 const axios = require('axios')
-const {User} = require('../model/user')
-const {generateToken} = require('../core/util')
-const {Auth} = require('../middleware/auth')
+const { User } = require('../model/user')
+const { generateToken } = require('../core/util')
+const { Auth } = require('../middleware/auth')
 const errorCode = {
     "-1": "系统繁忙，此时请开发者稍候再试",
     "0": "请求成功",
@@ -21,7 +21,7 @@ class WxManager {
         if (res.status !== 200) {
             throw new global.errs.AuthFailed('openid获取失败')
         }
-        if (res.data.errcode !== 0) {
+        if (res.data.errcode) {
             throw new global.errs.AuthFailed(errorCode[`${res.data.errcode}`])
         }
         let user = await User.getUserByOpenid(res.data.openid)

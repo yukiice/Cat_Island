@@ -1,27 +1,28 @@
 const Router = require('koa-router')
 
 const {
-    TokenValidator
+    TokenValidator,
+    NoEmptyStringValidator
 } = require('../validators/validator.js')
 
 const {
     User
 } = require('../model/user')
 
-const {LoginType} = require('../lib/enum')
+const { LoginType } = require('../lib/enum')
 
 // 导入 token处理函数
-const {generateToken} = require('../core/util')
+const { generateToken } = require('../core/util')
 
-const {WxManager} = require('../service/wx')
+const { WxManager } = require('../service/wx')
 
-const {Auth} = require('../middleware/auth')
+const { Auth } = require('../middleware/auth')
 
 const router = new Router({
     prefix: `/v1/token`
 })
 
-router.post(`/`, async (ctx, next) => {
+router.post(`/`, async(ctx, next) => {
     const v = await new TokenValidator().validate(ctx)
     let token
     switch (v.get('body.type')) {
@@ -45,6 +46,14 @@ router.post(`/`, async (ctx, next) => {
     }
     ctx.body = {
         token
+    }
+})
+
+router.post('/verify', async(ctx, next) => {
+    const v = await new NoEmptyStringValidator().validate(ctx)
+    const res = Auth.verifyToken(v.get('body.token'))
+    ctx.body = {
+        res
     }
 })
 

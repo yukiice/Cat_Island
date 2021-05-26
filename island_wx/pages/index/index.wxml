@@ -1,0 +1,4 @@
+<view>
+  <van-button type="primary" bind:click="onGetToken">获取token</van-button>
+  <van-button type="danger" bind:click="verifyToken">验证token</van-button>
+</view>
