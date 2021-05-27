@@ -2,7 +2,7 @@ module.exports = {
     environment: 'dev',
     security: {
         secretKey: "$6jiORlWa!k?YK",
-        expiresIn: 60 * 60 * 24
+        expiresIn: 60 * 60
     },
     database: {
         dbName: 'island',

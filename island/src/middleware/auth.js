@@ -25,10 +25,11 @@ class Auth {
             try {
                 decode = jwt.verify(userToken.name, global.config.security.secretKey)
             } catch (error) {
-                // 判断token异常情况，为两种
-                // 1.传了token，但不合法
-                // 2.传了正确的token，但过期了
-                if (error.name = "TokenExpiredError") {
+                console.log(error)
+                    // 判断token异常情况，为两种
+                    // 1.传了token，但不合法
+                    // 2.传了正确的token，但过期了
+                if (error.name === "TokenExpiredError") {
                     errMsg = 'token已过期'
                 }
                 throw new global.errs.Forbbiden(errMsg)
